@@ -308,15 +308,15 @@ function receivedMessage(event) {
 		  } else if (results.zip){
 			console.log(JSON.stringify(results, undefined, 2));
 			sendTextMessage(senderID, 'Your location: ' + results.zip + ' ' + results.country + ', ' + results.city + ', ' + results.street + ' 📧');	
-			//var path='pages/search?q=Restaurant, ' + results.zip + ' ' + results.city' &fields=name,location&limit=100';
 			var path='pages/search?q=Restaurant, ' + results.zip + ' ' + results.city + '&fields=name,location&limit=100';
 			console.log(path);
 			graphpagerequests(path).then(function(response) {
-				var restaurantname='';
 				var id=response[0].id
-				var restaurantcity='';
-				var restaurantcountry='';
-				var restaurantstreet='';
+				var restaurantmessage='',
+					restaurantname='',
+					restaurantcity='',
+					restaurantcountry='',
+					restaurantstreet='';
 				if (response[0].name){restaurantname=response[0].name;}
 				if (response[0].location){
 					if (response[0].location.city){restaurantcity=response[0].location.city;}
