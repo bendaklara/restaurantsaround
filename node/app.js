@@ -308,7 +308,7 @@ function receivedMessage(event) {
 		  } else if (results.zip){
 			console.log(JSON.stringify(results, undefined, 2));
 			sendTextMessage(senderID, 'Your location: ' + results.zip + ' ' + results.country + ', ' + results.city + ', ' + results.street + ' 📧');	
-			var path='pages/search?q=Restaurant, ' + results.zip + ' ' + results.city + '&fields=name,location&limit=100';
+			var path='pages/search?q=Restaurant,' + results.zip + ' ' + results.country + '&fields=name,location';
 			console.log(path);
 			graphpagerequests(path).then(function(response) {
 				var id=response[0].id
