@@ -327,7 +327,7 @@ function receivedMessage(event) {
 				console.log(restaurantmessage);					
 				sendTextMessage(senderID, restaurantmessage);
 				var cleanedresponse=[];
-				for (forcount=0; forcount < response.length; forcount++) {
+				for (var forcount=0; forcount < response.length; forcount++) {
 					if (response[forcount].location&response[forcount].location.country==results.country& response[forcount].location.city==results.city&response[forcount].location.zip==results.zip){
 					cleanedresponse.push(response[forcount]);
 					}
