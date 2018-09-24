@@ -326,33 +326,41 @@ function receivedMessage(event) {
 				restaurantmessage=restaurantname + ' ' + restaurantstreet + ' ' + restaurantcity + ' ' + restaurantcountry;  
 				console.log(restaurantmessage);					
 				sendTextMessage(senderID, restaurantmessage);
-				if (response.length>1){
+				var cleanedresponse=[];
+				for (forcount=0; forcount < response.length; forcount++) {
+					if (response[forcount].location&response[forcount].location.country==results.country& response[forcount].location.city==results.city&response[forcount].location.zip==results.zip){
+					cleanedresponse.push(response[forcount]);
+					}
+				}
+				console.log(cleanedresponse);
+					
+				if (cleanedresponse.length>1){
 					var restaurantname='';
-					var id=response[1].id
+					var id=cleanedresponse[1].id
 					var restaurantcity='';
 					var restaurantcountry='';
 					var restaurantstreet='';
-					if (response[1].name){restaurantname=response[1].name;}
-					if (response[1].location){
-						if (response[1].location.city){restaurantcity=response[1].location.city;}
-						if (response[1].location.country){restaurantcountry=response[1].location.country;}
-						if (response[1].location.street){restaurantstreet=response[1].location.street;}
+					if (cleanedresponse[1].name){restaurantname=cleanedresponse[1].name;}
+					if (cleanedresponse[1].location){
+						if (cleanedresponse[1].location.city){restaurantcity=cleanedresponse[1].location.city;}
+						if (cleanedresponse[1].location.country){restaurantcountry=cleanedresponse[1].location.country;}
+						if (cleanedresponse[1].location.street){restaurantstreet=cleanedresponse[1].location.street;}
 					}
 					restaurantmessage=restaurantname + ' ' + restaurantstreet + ' ' + restaurantcity + ' ' + restaurantcountry;
 					console.log(restaurantmessage);					
 					sendTextMessage(senderID, restaurantmessage);
 				}
-				if (response.length>2){
+				if (cleanedresponse.length>2){
 					var restaurantname='';
-					var id=response[2].id
+					var id=cleanedresponse[2].id
 					var restaurantcity='';
 					var restaurantcountry='';
 					var restaurantstreet='';
-					if (response[2].name){restaurantname=response[2].name;}
-					if (response[2].location){
-						if (response[2].location.city){restaurantcity=response[2].location.city;}
-						if (response[2].location.country){restaurantcountry=response[2].location.country;}
-						if (response[2].location.street){restaurantstreet=response[2].location.street;}
+					if (cleanedresponse[2].name){restaurantname=cleanedresponse[2].name;}
+					if (cleanedresponse[2].location){
+						if (cleanedresponse[2].location.city){restaurantcity=cleanedresponse[2].location.city;}
+						if (cleanedresponse[2].location.country){restaurantcountry=cleanedresponse[2].location.country;}
+						if (cleanedresponse[2].location.street){restaurantstreet=cleanedresponse[2].location.street;}
 					}
 					restaurantmessage=restaurantname + ' ' + restaurantstreet + ' ' + restaurantcity + ' ' + restaurantcountry;  
 					console.log(restaurantmessage);					
