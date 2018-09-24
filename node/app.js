@@ -318,7 +318,7 @@ function receivedMessage(event) {
 								var restaurantname='',
 									restaurantcity='',
 									restaurantcountry='',
-									restaurantmessage='';
+									restaurantmessage='',
 									restaurantstreet='';
 								if (response[i].name){restaurantname=response[i].name;}
 								if (response[i].location.city){restaurantcity=response[i].location.city;}
