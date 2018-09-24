@@ -270,7 +270,6 @@ function receivedMessage(event) {
   } 
 
   if (messageText) {
-
     // If we receive a text message, check to see if it matches any special
     // keywords and send back the corresponding example. Otherwise, just echo
     // the text we received.
@@ -299,87 +298,45 @@ function receivedMessage(event) {
   } else if (messageAttachments) {
 		if (messageAttachments[0].payload) {var payload = messageAttachments[0].payload;}
 		console.log("Ez a location quick reply payload: " + payload);
-	    if (payload.coordinates) {
-		console.log('Lat: ' + payload.coordinates.lat);
-		console.log('Lon: ' + payload.coordinates.long);		
-		geocode.geocodeAddress(KEY, payload.coordinates.lat, payload.coordinates.long, (errorMessage, results) => {
-		  if (errorMessage) {
-			console.log(errorMessage);			
-		  } else if (results.zip){
-			console.log(JSON.stringify(results, undefined, 2));
-			sendTextMessage(senderID, 'Your location: ' + results.zip + ' ' + results.country + ', ' + results.city + ', ' + results.street + ' 📧');	
-			var path='pages/search?q=Restaurant,' + results.zip + ' ' + results.country + '&fields=name,location';
-			console.log(path);
-			graphpagerequests(path).then(function(response) {
-				var cleanedresponse=[];
-				for (var i=0; i < response.length; i++) {
-					console.log('FB Zip: ' + response[i].location.zip + 'Map Zip: ' + results.zip);
-					if (response[i].location & response[i].location.zip==results.zip){
-					cleanedresponse.push(response[i]);
-					}
-				}
-				console.log(cleanedresponse);
-				
-				var id=cleanedresponse[0].id
-				var restaurantmessage='',
-					restaurantname='',
-					restaurantcity='',
-					restaurantcountry='',
-					restaurantstreet='';
-				if (cleanedresponse[0].name){restaurantname=cleanedresponse[0].name;}
-				if (cleanedresponse[0].location){
-					if (cleanedresponse[0].location.city){restaurantcity=cleanedresponse[0].location.city;}
-					if (cleanedresponse[0].location.country){restaurantcountry=cleanedresponse[0].location.country;}
-					if (cleanedresponse[0].location.street){restaurantstreet=cleanedresponse[0].location.street;}
-				}
-				restaurantmessage=restaurantname + ' ' + restaurantstreet + ' ' + restaurantcity + ' ' + restaurantcountry;  
-				console.log(restaurantmessage);					
-				sendTextMessage(senderID, restaurantmessage);
-					
-				if (cleanedresponse.length>1){
-					var restaurantname='';
-					var id=cleanedresponse[1].id
-					var restaurantcity='';
-					var restaurantcountry='';
-					var restaurantstreet='';
-					if (cleanedresponse[1].name){restaurantname=cleanedresponse[1].name;}
-					if (cleanedresponse[1].location){
-						if (cleanedresponse[1].location.city){restaurantcity=cleanedresponse[1].location.city;}
-						if (cleanedresponse[1].location.country){restaurantcountry=cleanedresponse[1].location.country;}
-						if (cleanedresponse[1].location.street){restaurantstreet=cleanedresponse[1].location.street;}
-					}
-					restaurantmessage=restaurantname + ' ' + restaurantstreet + ' ' + restaurantcity + ' ' + restaurantcountry;
-					console.log(restaurantmessage);					
-					sendTextMessage(senderID, restaurantmessage);
-				}
-				if (cleanedresponse.length>2){
-					var restaurantname='';
-					var id=cleanedresponse[2].id
-					var restaurantcity='';
-					var restaurantcountry='';
-					var restaurantstreet='';
-					if (cleanedresponse[2].name){restaurantname=cleanedresponse[2].name;}
-					if (cleanedresponse[2].location){
-						if (cleanedresponse[2].location.city){restaurantcity=cleanedresponse[2].location.city;}
-						if (cleanedresponse[2].location.country){restaurantcountry=cleanedresponse[2].location.country;}
-						if (cleanedresponse[2].location.street){restaurantstreet=cleanedresponse[2].location.street;}
-					}
-					restaurantmessage=restaurantname + ' ' + restaurantstreet + ' ' + restaurantcity + ' ' + restaurantcountry;  
-					console.log(restaurantmessage);					
-					sendTextMessage(senderID, restaurantmessage);
-				}				
-			}, function(error) {
-				sendTextMessage(senderID, error);
-			});
-			
-		  } else {
+		if (payload.coordinates) {
+			console.log('Lat: ' + payload.coordinates.lat);
+			console.log('Lon: ' + payload.coordinates.long);		
+			geocode.geocodeAddress(KEY, payload.coordinates.lat, payload.coordinates.long, (errorMessage, results) => {
+			if (errorMessage) {
+				console.log(errorMessage);			
+			} else if (results.zip){
+				console.log(JSON.stringify(results, undefined, 2));
+				sendTextMessage(senderID, 'Your location: ' + results.zip + ' ' + results.country + ', ' + results.city + ', ' + results.street + ' 📧');	
+				var path='pages/search?q=Restaurant,' + results.zip + ' ' + results.country + '&fields=name,location';
+				console.log(path);
+				graphpagerequests(path).then(function(response) {
+						var j=0;
+						for (var i=0; j < 3; i++) {
+							if (response.length>i && response[i].location.zip && response[i].location.zip == results.zip){
+								j=j+1
+								var restaurantname='';
+								var id=response[i].id
+								var restaurantcity='';
+								var restaurantcountry='';
+								var restaurantstreet='';
+								if (response[i].name){restaurantname=response[i].name;}
+								if (response[i].location.city){restaurantcity=response[i].location.city;}
+								if (response[i].location.country){restaurantcountry=response[i].location.country;}
+								if (response[i].location.street){restaurantstreet=response[i].location.street;}
+								}
+							restaurantmessage=restaurantname + ' ' + restaurantstreet + ' ' + restaurantcity + ' ' + restaurantcountry;
+							console.log(restaurantmessage);					
+							sendTextMessage(senderID, restaurantmessage);									
+						}
+				}, function(error) {
+					sendTextMessage(senderID, error);
+				});
+			} else {
 			sendTextMessage(senderID, results);
-		  }
-		  });	  
-        } 
-	  
-	  
-  } 
+			}
+		});	  
+	}
+  }	
 }
 
 
