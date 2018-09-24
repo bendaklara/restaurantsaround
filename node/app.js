@@ -315,7 +315,7 @@ function receivedMessage(event) {
 				for (var i=0; i < response.length; i++) {
 					console.log('FB Zip: ' + response[i].location.zip + 'Map Zip: ' + results.zip);
 					if (response[i].location & response[i].location.zip==results.zip){
-					cleanedresponse.push(response[forcount]);
+					cleanedresponse.push(response[i]);
 					}
 				}
 				console.log(cleanedresponse);
