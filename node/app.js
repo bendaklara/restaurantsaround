@@ -314,11 +314,12 @@ function receivedMessage(event) {
 						for (var i=0; j < 3; i++) {
 							if (response.length>i && response[i].location.zip && response[i].location.zip == results.zip){
 								j=j+1
-								var restaurantname='';
-								var id=response[i].id
-								var restaurantcity='';
-								var restaurantcountry='';
-								var restaurantstreet='';
+								var id=response[i].id;
+								var restaurantname='',
+									restaurantcity='',
+									restaurantcountry='',
+									restaurantmessage='';
+									restaurantstreet='';
 								if (response[i].name){restaurantname=response[i].name;}
 								if (response[i].location.city){restaurantcity=response[i].location.city;}
 								if (response[i].location.country){restaurantcountry=response[i].location.country;}
