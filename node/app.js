@@ -311,28 +311,30 @@ function receivedMessage(event) {
 			var path='pages/search?q=Restaurant,' + results.zip + ' ' + results.country + '&fields=name,location';
 			console.log(path);
 			graphpagerequests(path).then(function(response) {
-				var id=response[0].id
+				var cleanedresponse=[];
+				for (var i=0; i < response.length; i++) {
+					console.log('FB Zip: ' + response[i].location.zip + 'Map Zip: ' + results.zip);
+					if (response[i].location & response[i].location.zip==results.zip){
+					cleanedresponse.push(response[forcount]);
+					}
+				}
+				console.log(cleanedresponse);
+				
+				var id=cleanedresponse[0].id
 				var restaurantmessage='',
 					restaurantname='',
 					restaurantcity='',
 					restaurantcountry='',
 					restaurantstreet='';
-				if (response[0].name){restaurantname=response[0].name;}
-				if (response[0].location){
-					if (response[0].location.city){restaurantcity=response[0].location.city;}
-					if (response[0].location.country){restaurantcountry=response[0].location.country;}
-					if (response[0].location.street){restaurantstreet=response[0].location.street;}
+				if (cleanedresponse[0].name){restaurantname=cleanedresponse[0].name;}
+				if (cleanedresponse[0].location){
+					if (cleanedresponse[0].location.city){restaurantcity=cleanedresponse[0].location.city;}
+					if (cleanedresponse[0].location.country){restaurantcountry=cleanedresponse[0].location.country;}
+					if (cleanedresponse[0].location.street){restaurantstreet=cleanedresponse[0].location.street;}
 				}
 				restaurantmessage=restaurantname + ' ' + restaurantstreet + ' ' + restaurantcity + ' ' + restaurantcountry;  
 				console.log(restaurantmessage);					
 				sendTextMessage(senderID, restaurantmessage);
-				var cleanedresponse=[];
-				for (var forcount=0; forcount < response.length; forcount++) {
-					if (response[forcount].location&response[forcount].location.country==results.country& response[forcount].location.city==results.city&response[forcount].location.zip==results.zip){
-					cleanedresponse.push(response[forcount]);
-					}
-				}
-				console.log(cleanedresponse);
 					
 				if (cleanedresponse.length>1){
 					var restaurantname='';
